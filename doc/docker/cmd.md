@@ -13,7 +13,7 @@ docker load <filename>
 # 删除镜像：
 docker rmi <img>[:<version>]
 # 命名镜像：
-docker tag <img>[:<version>]
+docker tag <img>[:<version>] <new img>[:<version>]
 
 docker ps
 docker ps -a

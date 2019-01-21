@@ -7,7 +7,7 @@
 systemctl stop firewalld
 systemctl disable firewalld
 setenforce 0
-sed -i '/^SELINUX=/c SELINUX=disabled' /etc/sysconfig/selinux
+sed -i '/^SELINUX=/c SELINUX=permissive' /etc/selinux/config
 
 yum -y install etcd kubernetes
 
