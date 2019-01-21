@@ -1,10 +1,11 @@
-# PostgreSQL
-## install
+# 1. PostgreSQL
+## 1.1 install
 ```bash
 service <firewalld/iptables> stop
 yum install -y postgresql-server
+
 ```
-## single node
+## 1.2 single node
 ### init
 ```bash
 postgresql-setup initdb
@@ -42,7 +43,7 @@ psql -h localhost -p 5432 -U postgres
 su - postgres -c "pg_ctl start -D ${PGDATA}"
 su - postgres -c "postgres -D ${PGDATA}" # daemon
 ```
-## master-slave mode
+## 1.3 master-slave mode
 |  | master(primary) | slave(standby) |
 | --- | --- | --- |
 | read write | RW | RO |
@@ -137,13 +138,14 @@ postgres=# select txid_current_snapshot();
 -----------------------
  548:548: 
 ```
-## hot switch
+## 1.4 hot switch
 ### promote slave to master
 ```bash
 su - postgres -c "pg_ctl promote -D ${PGDATA}"
 ```
 ### configure old master or other slave to recover from new master
-create or edit recovery.conf under ${PGDATA}, set "host" refer to new master, then restart pgsql-server
+- create or edit recovery.conf under ${PGDATA}, set "host" refer to new master, then restart pgsql-server
+
 ```bash
 vim ${PGDATA}/recovery.conf
 ```
@@ -160,8 +162,8 @@ service postgresql restart
 ```
 
 
-# pgpool-II
-## config
+# 2. pgpool-II
+## 2.1 config
 ### pgpool.conf
 ```bash
 vim /etc/pgpool-II/pgpool.conf
