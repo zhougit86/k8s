@@ -9,7 +9,7 @@ yum install -y postgresql-server
 ### init
 ```bash
 postgresql-setup initdb
-# this cmd will generate DB files under default directory: ${PGDATA}
+# this command will generate DB files under default directory: ${PGDATA}
 # you can also specify other directory as ${PGDATA}
 ```
 ### pg_hba.conf
@@ -26,7 +26,8 @@ host    all             all             0.0.0.0/0               trust
 # IPv6 local connections:
 host    all             all             ::1/128                 trust
 ```
-METHOD: peer/md5(connection requires password verification)/trust
+- METHOD: peer / md5(connection requires password verification) / trust
+
 ### postgresql.conf
 ```bash
 vim ${PGDATA}/postgresql.conf
@@ -39,7 +40,7 @@ listen_addresses = '*'
 service postgresql start
 psql -h localhost -p 5432 -U postgres
 
-# you can also try below cmd to start postgresql-server
+# you can also try below CMD to start postgresql-server
 su - postgres -c "pg_ctl start -D ${PGDATA}"
 su - postgres -c "postgres -D ${PGDATA}" # daemon
 ```
@@ -276,12 +277,45 @@ esac
 echo ==================================================
 ```
 ### pcp.conf
+- register pcp account used by "pcp CMD"
+- below is a example: username 'postgres', password 'postgres'
+
 ```bash
-vim /etc/pgpool-II/pcp.conf 
+echo postgres:$(pg_md5 postgres) >> /etc/pgpool-II/pcp.conf
+vim /etc/pgpool-II/pcp.conf
 ```
 ```text
 postgres:e8a48653851e28c69d0506508fb27fc5
 ```
+## 2.2 check via psql
+```bash
+psql -h <pgpool VIP> -p 9999 -U postgres
+```
+```text
+postgres=# show pool_nodes;
+ node_id |   hostname    | port | status | lb_weight |  role   
+---------+---------------+------+--------+-----------+---------
+ 0       | 192.168.56.61 | 5432 | 2      | 0.333333  | standby
+ 1       | 192.168.56.62 | 5432 | 2      | 0.333333  | standby
+ 2       | 192.168.56.63 | 5432 | 2      | 0.333333  | primary
+```
+- status: 1(newly added) / 2(active) / 3(inactive)
 
+## 2.3 pcp CMD
+- hostname: pgpool node IP, VIP of pgpool cluster is strongly suggested
+- port: configured in pgpool.conf, default is 9898
+- username: refer to username in pcp.conf
+- password: refer to password in pcp.conf
+- nodeID: node-x in pgpool.conf, e.g. 0, 1, 2
 
+```bash
+# get backend postgresql-server node info
+pcp_node_count --help
+pcp_node_info --help
+# get watch dog info
+pcp_watchdog_info --help
+# after an offline postgresql-server back online, and which is correctly recover to good condition
+# use below command to notify pgpool cluster
+pcp_attach_node --help
+```
 
