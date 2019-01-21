@@ -164,6 +164,7 @@ service postgresql restart
 
 
 # 2. pgpool-II
+http://www.pgpool.net/docs/pgpool-II-3.2.1/pgpool-zh_cn.html
 ## 2.1 config
 ### pgpool.conf
 ```bash
