@@ -197,7 +197,7 @@ load_balance_mode = on
 master_slave_mode = on
 master_slave_sub_mode = 'stream'
 sr_check_user = 'postgres'
-follow_master_command = 'bash /root/pg/fail.sh after_failover "%d" "%h" "%p" "%D" "%m" "%H" "%M" "%P" "%r" "%R" >> /tmp/fail.log'
+follow_master_command = 'bash /root/pg/fail.sh follow_master "%d" "%h" "%p" "%D" "%m" "%H" "%M" "%P" "%r" "%R" >> /tmp/fail.log'
 
 health_check_period = 1
 health_check_timeout = 3
@@ -264,8 +264,8 @@ then
 ${ssh_nopass} ${primary_ip} bash /root/pg/promote.sh
 fi
 ;;
-after_failover )
-echo after_failover
+follow_master )
+echo follow_master
 ${ssh_nopass} ${node_ip} bash /root/pg/start-slave.sh ${primary_ip}
 pcp_attach_node 5 localhost 9898 postgres postgres ${node_id}
 ;;
