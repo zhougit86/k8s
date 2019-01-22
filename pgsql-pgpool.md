@@ -197,14 +197,14 @@ load_balance_mode = on
 master_slave_mode = on
 master_slave_sub_mode = 'stream'
 sr_check_user = 'postgres'
-follow_master_command = 'bash /root/pg/fail.sh after_failover %d %h %p %D %m %H %M %P %r %R >> /tmp/fail.log'
+follow_master_command = 'bash /root/pg/fail.sh after_failover "%d" "%h" "%p" "%D" "%m" "%H" "%M" "%P" "%r" "%R" >> /tmp/fail.log'
 
 health_check_period = 1
 health_check_timeout = 3
 health_check_user = 'postgres'
 
-failover_command = 'bash /root/pg/fail.sh failover %d %h %p %D %m %H %M %P %r %R >> /tmp/fail.log'
-failback_command = 'bash /root/pg/fail.sh failback %d %h %p %D %m %H %M %P %r %R >> /tmp/fail.log'
+failover_command = 'bash /root/pg/fail.sh failover "%d" "%h" "%p" "%D" "%m" "%H" "%M" "%P" "%r" "%R" >> /tmp/fail.log'
+failback_command = 'bash /root/pg/fail.sh failback "%d" "%h" "%p" "%D" "%m" "%H" "%M" "%P" "%r" "%R" >> /tmp/fail.log'
 
 use_watchdog = on
 trusted_servers = '<self IP>,<pgpool node-0 IP>,<pgpool node-1 IP>'
